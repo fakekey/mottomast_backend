@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String
+  fullName String
+  nickName String    @unique
+  messages Message[]
+  rooms    Room[]
+  unreads  Unread[]
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "users")
+}
+
+model Message {
+  id      Int    @id @default(autoincrement())
+  type    Int    @default(0)
+  content String
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  roomId  Int
+  room    Room   @relation(fields: [roomId], references: [id])
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "messages")
+}
+
+model Room {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  messages Message[]
+  users    User[]
+  unreads  Unread[]
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "rooms")
+}
+
+model Unread {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+  roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
+  count  Int  @default(0)
+
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map(name: "unreads")
+}
