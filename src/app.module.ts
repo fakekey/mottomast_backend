@@ -11,7 +11,7 @@ import { PrismaModule } from './common/prisma/prisma.module';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, ConfigModule],
+  imports: [ConfigModule.forRoot(), PrismaModule, AuthModule, UserModule],
   providers: [
     AppGateway,
     {
