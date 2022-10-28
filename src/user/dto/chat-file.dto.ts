@@ -1,15 +1,6 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
-
 export class ChatFileDto {
-  @IsNotEmpty()
-  @IsInt()
-  room: number;
-
-  @IsString()
-  @IsNotEmpty()
-  content: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  type: number;
+  file_name: string;
+  file_size: string;
+  room_id: string;
+  type: string;
 }

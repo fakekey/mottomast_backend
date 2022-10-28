@@ -12,7 +12,7 @@ import { PrismaService } from './common/prisma/prisma.service';
   const env = app.get(ConfigService);
   app.enableCors({ origin: '*' });
   app.setGlobalPrefix('api/v1');
-  app.useStaticAssets(join(__dirname, '/public'));
+  app.useStaticAssets(join(__dirname, '../public'));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

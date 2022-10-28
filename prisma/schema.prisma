@@ -28,13 +28,15 @@ model User {
 }
 
 model Message {
-  id      Int    @id @default(autoincrement())
-  type    Int    @default(0)
-  content String
-  userId  Int
-  user    User   @relation(fields: [userId], references: [id])
-  roomId  Int
-  room    Room   @relation(fields: [roomId], references: [id])
+  id       Int     @id @default(autoincrement())
+  type     Int     @default(0)
+  content  String
+  fileName String?
+  fileSize Float?
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  roomId   Int
+  room     Room    @relation(fields: [roomId], references: [id])
 
   isDeleted Boolean?  @default(false)
   createdAt DateTime? @default(now())

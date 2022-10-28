@@ -17,6 +17,8 @@ CREATE TABLE "messages" (
     "id" SERIAL NOT NULL,
     "type" INTEGER NOT NULL DEFAULT 0,
     "content" TEXT NOT NULL,
+    "fileName" TEXT,
+    "fileSize" DOUBLE PRECISION,
     "userId" INTEGER NOT NULL,
     "roomId" INTEGER NOT NULL,
     "isDeleted" BOOLEAN DEFAULT false,
