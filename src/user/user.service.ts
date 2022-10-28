@@ -402,4 +402,59 @@ export class UserService {
 
     return res;
   }
+
+  async updatePinned(id: number, pinned: boolean) {
+    const res = await this.prisma.message.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isPinned: pinned,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            nickName: true,
+            email: true,
+          },
+        },
+      },
+    });
+    const room = await this.prisma.room.findUnique({
+      where: {
+        id: res.roomId,
+      },
+      include: {
+        users: true,
+      },
+    });
+
+    for (const user of room.users) {
+      AppSocket.server.to(`user:${user.id}`).emit('PINNED_CHANGED', res);
+    }
+
+    return res;
+  }
+
+  async getPinnedMessages(roomId: number) {
+    const res = await this.prisma.message.findMany({
+      where: {
+        roomId: roomId,
+        isPinned: true,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullName: true,
+            nickName: true,
+            email: true,
+          },
+        },
+      },
+    });
+    return res;
+  }
 }

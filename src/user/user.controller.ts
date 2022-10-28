@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseBoolPipe,
+  ParseIntPipe,
   Post,
   Query,
   UploadedFile,
@@ -20,7 +21,6 @@ import { JwtUserExtract } from '../auth/auth.controller';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { User } from '../common/decorator/decorator';
 import { InvalidParameterFilter } from '../common/filter/invalid-paramater.filter';
-import { ChatFileDto } from './dto/chat-file.dto';
 import { ChatDto } from './dto/chat.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UserService } from './user.service';
@@ -87,5 +87,22 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async messages(@Param('id') id: string, @Query('page') page: string) {
     return await this.userService.messages(parseInt(id), parseInt(page));
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('message/update-pinned')
+  @UseGuards(JwtAuthGuard)
+  async updatePinned(
+    @Query('id', ParseIntPipe) id: number,
+    @Query('pinned', ParseBoolPipe) pinned: boolean,
+  ) {
+    return await this.userService.updatePinned(id, pinned);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('messages/pinned/:id')
+  @UseGuards(JwtAuthGuard)
+  async getPinnedMessages(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.getPinnedMessages(id);
   }
 }

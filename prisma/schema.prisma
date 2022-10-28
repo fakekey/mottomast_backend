@@ -34,6 +34,7 @@ model Message {
   fileName String?
   fileSize Float?
   userId   Int
+  isPinned Boolean @default(false)
   user     User    @relation(fields: [userId], references: [id])
   roomId   Int
   room     Room    @relation(fields: [roomId], references: [id])

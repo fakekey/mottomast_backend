@@ -20,6 +20,7 @@ CREATE TABLE "messages" (
     "fileName" TEXT,
     "fileSize" DOUBLE PRECISION,
     "userId" INTEGER NOT NULL,
+    "isPinned" BOOLEAN NOT NULL DEFAULT false,
     "roomId" INTEGER NOT NULL,
     "isDeleted" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
